@@ -1,5 +1,5 @@
-//  Title: Search Light
-//  Description: A search light searches through the darkness with a green beam
+//  Title: Noisy Circle
+//  Description: An example of using noise to make animations more interesting
 //  Date Started: 2012 Mar 09
 //  Last Modified: 2012 Mar 09
 //  http://asymptoticdesign.wordpress.com/
@@ -29,7 +29,7 @@ float radNoise;
  the sketch size, background color, framerate, etc. etc.*/
 void setup() {
   //setup the sketch parameters
-  background(0);
+  background(255);
   size(500, 500);
   frameRate(30);
   smooth();
@@ -41,7 +41,7 @@ void setup() {
 
 //-----------------Main Loop
 void draw() {
-  fill(0,7);
+  fill(0,43);
   rect(0,0,width,height);
   //increment noise
   radNoise += 0.1;
@@ -50,12 +50,9 @@ void draw() {
   float x = r*cos(theta) + centX;
   float y = r*sin(theta) + centY;
   //setup the parameters for drawign the ellipse
-  stroke(255*noise(radNoise),255,255*noise(radNoise));
+  noStroke();
+  fill(200);
   //draw the ellipse
-  line(0,0,x,y);
+  ellipse(x, y, 16, 16);
   //update the position for the next frame
-}
-
-void mousePressed() {
-  saveFrame("searchlight.png");
 }

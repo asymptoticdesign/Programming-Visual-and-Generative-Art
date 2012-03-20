@@ -1,5 +1,5 @@
-//  Title: Search Light
-//  Description: A search light searches through the darkness with a green beam
+//  Title: Rotating Ribbon
+//  Description: A ribbon rotates and ripples in the darkness
 //  Date Started: 2012 Mar 09
 //  Last Modified: 2012 Mar 09
 //  http://asymptoticdesign.wordpress.com/
@@ -41,21 +41,25 @@ void setup() {
 
 //-----------------Main Loop
 void draw() {
-  fill(0,7);
+  fill(0,2);
   rect(0,0,width,height);
   //increment noise
   radNoise += 0.1;
   r += (noise(radNoise) - 0.5)*rad_vel;
   theta += theta_vel;
-  float x = r*cos(theta) + centX;
-  float y = r*sin(theta) + centY;
+  centX += 2*noise(theta) - 1;
+  centY += 2*noise(theta) - 1;
+  float x1 = r*cos(theta) + centX;
+  float y1 = r*sin(theta) + centY;
+  float x2 = -r*cos(theta) + centX;
+  float y2 = -r*sin(theta) + centY;
   //setup the parameters for drawign the ellipse
   stroke(255*noise(radNoise),255,255*noise(radNoise));
   //draw the ellipse
-  line(0,0,x,y);
+  line(x1,y1,x2,y2);
   //update the position for the next frame
 }
 
 void mousePressed() {
-  saveFrame("searchlight.png");
+  saveFrame("ribbon.png");
 }

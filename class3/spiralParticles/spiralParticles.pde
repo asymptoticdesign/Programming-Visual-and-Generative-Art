@@ -1,7 +1,7 @@
-//  Title: Search Light
-//  Description: A search light searches through the darkness with a green beam
+//  Title: Noisy Spiral (Animated)
+//  Description: An example of using noise to make animations more interesting
 //  Date Started: 2012 Mar 09
-//  Last Modified: 2012 Mar 09
+//  Last Modified: 2012 Mar 13
 //  http://asymptoticdesign.wordpress.com/
 //  This work is licensed under a Creative Commons 3.0 License.
 //  (Attribution - NonCommerical - ShareAlike)
@@ -17,45 +17,65 @@
 
 //-----------------Globals
 /* These are variables that you want to exist throughout the entire sketch.*/
-float r = 150;
+float rad = 0;
 float theta = 0;
-float theta_vel = 0.02;
-float rad_vel = 7;
 float centX, centY;
-float radNoise;
+float lastx = 250;
+float lasty = 250;
+float seed = random(17);
 
 //-----------------Setup
 /*The code in setup() will only be run once in your sketch.  Use this space to set things up like
  the sketch size, background color, framerate, etc. etc.*/
 void setup() {
   //setup the sketch parameters
-  background(0);
-  size(500, 500);
-  frameRate(30);
+  size(500, 500); 
+  background(255);
+  //object color properties
+  stroke(30, 50, 70, 128);
+  noFill();
+  strokeWeight(5);
   smooth();
+  //setup some reference variables
   centX = width/2;
   centY = height/2;
-  //seed noises
-  radNoise = random(17);
+  //draw a reference circle
+  ellipse(centX, centY, 100, 100);
+  //now draw the part-by-part circle
+  stroke(30, 50, 70);
+  fill(255,128);
 }
 
 //-----------------Main Loop
 void draw() {
-  fill(0,7);
   rect(0,0,width,height);
-  //increment noise
-  radNoise += 0.1;
-  r += (noise(radNoise) - 0.5)*rad_vel;
-  theta += theta_vel;
-  float x = r*cos(theta) + centX;
-  float y = r*sin(theta) + centY;
-  //setup the parameters for drawign the ellipse
-  stroke(255*noise(radNoise),255,255*noise(radNoise));
-  //draw the ellipse
-  line(0,0,x,y);
-  //update the position for the next frame
 }
 
-void mousePressed() {
-  saveFrame("searchlight.png");
-}
+class Particle { 
+  float seed;
+  float x_position;
+  float y_position;
+  float theta_vel;
+  float lastX;
+  float lastY;
+  
+  Particle(float seedValue, float curr_x, float curr_y, float thetaVelocity) { 
+    seed = seedValue;
+    x_position = curr_x;
+    y_position = curr_y;
+    theta_vel = thetaVelocity;
+  }
+
+  void display() {
+    line(lastX,lastY,x_position,y_position);
+  }
+
+  void update() {
+    seed += 0.5;
+    rad += 20*noise(seed) - 5;
+    theta += 5;
+    float x_position = centX + rad*cos(radians(theta));
+    float y_position = centY + rad*sin(radians(theta));
+    }
+  }
+
